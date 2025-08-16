@@ -1,0 +1,57 @@
+dataset: "ImageNet"
+checkpoints_directory: "./checkpoints/imagenet"
+dataset_directory: "Your dataset directory"
+noisy_training: True
+ber_model_path: "./checkpoints/clarke_channel_models/clarke_model"
+train_ber_model_orders: [1, 2, 3]
+
+noisy_evaluation: True
+use_channel_model_for_eval: True
+tracking_trained_wireless_param: True
+
+eval_wireless_param: 0
+Manual_flip_pattern_mode: False
+seed: 1999
+
+start_from_checkpoint: False
+training_symbol_interval: 32
+channel_fading_dir: "./data/channel"
+symbol_period: 2.5 # ms
+samp_per_symbol: 32
+cyclic_prefix_num: 8
+init_aimc_bit: 2
+valid_sub_carrier_num: 14
+init_modulation_order: 1
+flat_mode: True
+multi_path_num: 2
+min_path_delay: 9
+max_path_delay: 40
+min_path_power: -5
+max_path_power: -1
+train_symbol_snr: None
+
+train_repeat_times: 1
+clip_a_upper_range: [1., 6.]
+slope_a_range: [0.1, 10.]
+clip_w_upper_range: [-5., 5.]
+clip_w_lower_range: [-5., 5.]
+slope_w_range: [0.1, 10.]
+init_wireless_p: 0.5
+wireless_loss_ratio: 0.05
+flat_channel_aug_mode: True
+freq_selective_aug_mode: True
+wireless_p_scale: 5.
+
+eval_multi_channel_configs: {
+  aimc_bit: [2, 3, 4], order: [1, 2, 3]
+}
+
+lr: 0.1
+momentum: 0.9
+weight_decay: 1e-4
+batch_size: 256
+epochs: 90
+num_workers: 60
+hyper_param_schedule: {
+  wireless_loss_ratio: {add_mul_mode: "add", period: 30, step_size: 0.05}
+}

@@ -1,0 +1,90 @@
+# environment
+device: 'GPU' # 'CPU', 'GPU'
+# dataset
+data_directory: './data'
+dataset: ImageNet # ImageNet-100
+dataset_directory: "/root/autodl-tmp/imagenet-100-v1"
+# save
+checkpoints_directory: './checkpoints'
+
+# ResNet50: Bottleneck: [in_ch_num, out_ch_num]; mid_width: out_ch_num / 4
+bottleneck_type: True
+blocks: [
+  [64, 256, 1], [256, 256, 1], [256, 256, 1],
+  [256, 512, 2], [512, 512, 1], [512, 512, 1], [512, 512, 1],
+  [512, 1024, 2], [1024, 1024, 1], [1024, 1024, 1], [1024, 1024, 1], [1024, 1024, 1], [1024, 1024, 1],
+  [1024, 2048, 2], [2048, 2048, 1], [2048, 2048, 1],
+]
+
+first_kernel_size: 7
+first_stride: 2
+first_pool_layer_setting: {"kernel_size": 3, "stride": 2, "padding": 1}
+
+kernel_size: 3
+
+# for quantization-aware training
+quantize_w: True
+w_bit_width: 4
+w_slope: 2.
+q_w_range: [-0.2, 0.2]
+quantize_w_blocks: [0, 1, 2]
+learn_w_lower: False
+learn_w_upper: False
+learn_w_slope: True
+
+quantize_a: [
+  [True, True, True],
+  [True, True, True],
+  [True, True, True],
+]
+
+a_bit_width: [
+  [4, 4, 4],
+  [4, 4, 4],
+  [4, 4, 1],
+]
+
+a_slope: 2.
+q_a_range: [0, 2.]
+quantize_a_blocks: [0, 1, 2, ]
+learn_a_lower: False
+learn_a_upper: True
+learn_a_slope: True
+
+# train settings
+epochs: 90
+warmup_epochs: 10
+batch_size: 256
+lr: 0.1
+warmup_lr: 0.001
+# lr reduction
+min_lr: 0.0001
+lr_reduction_factor: 0.5
+lr_patience: 3
+metric_threshold: 0.0001
+cool_down: 0
+# slope
+warmup_slope: 2.
+slope_warmup_epochs: 20
+
+evaluate_interval: 1
+save_interval: 10
+
+
+# for post-training quantization
+post_quantize_w: False
+post_w_bit_width: 4
+# conv0: -1, res_block0: 0, res_block1: 1, ...
+post_quantize_w_layers: []
+
+post_quantize_a: True
+post_a_bit_width: 4
+post_quantize_a_layers: []
+
+calibration_epochs: 10
+calibration_num: 100
+calibration_batch_size: 20
+
+each_class_calibration_num: 10
+
+

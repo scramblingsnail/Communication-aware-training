@@ -1,0 +1,5 @@
+numpy~=1.22.4
+torch~=1.9.0+cu111
+torchvision~=0.10.0+cu111
+h5py~=3.8.0
+PyYAML~=5.4.1
