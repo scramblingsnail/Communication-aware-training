@@ -889,10 +889,6 @@ def main_worker(gpu_id: int, world_size: int, config: dict, train_logger):
 			train_logger=train_logger,
 		)
 
-		# Check unused parameters.
-		# for name, param in model.named_parameters():
-		# 	if param.grad is None:
-		# 		print(name)
 		wireless_p_status = model.module.flipper.get_wireless_param_str()
 		if gpu_id == 0:
 			print(wireless_p_status)
@@ -923,8 +919,6 @@ def main_worker(gpu_id: int, world_size: int, config: dict, train_logger):
 			return_item=False,
 			eval_wireless_params=best_wireless_params,
 		)
-
-		# acc1, acc5 = init_acc1, init_acc5
 
 		scheduler.step()
 		config = p_stepper.step(config, verbose=gpu_id==0)
@@ -1048,65 +1042,21 @@ def a_evaluate_task(eval_config: dict):
 
 def train_eval_imagenet():
 	my_train_config = get_config("train_config.yaml")
-
-	flat_aug, selective_aug = True, True
-	seed = 1999
-	checkpoint_path = f"./checkpoints/imagenet"
-	each_config = {
-		"checkpoints_directory": checkpoint_path,
-		"dataset_directory": f"/root/autodl-tmp/imagenet",
-		# Multi-channel training
-		"train_ber_model_orders": [1, 2, 3],
-
-		"noisy_training": True,
-		"seed": seed,
-		"ber_model_path": r"./checkpoints/clarke_channel_models/clarke_model",
-		"use_channel_model_for_eval": True,
-		"flat_mode": True,
-		"flat_channel_aug_mode": flat_aug,
-		"freq_selective_aug_mode": selective_aug,
-		"wireless_loss_ratio": 0.05,
-		"eval_multi_channel_configs": {"aimc_bit": [2, 3, 4], "order": [1, 2, 3]},
-	}
-	my_train_config.update(each_config)
-	ber_model_num = len(each_config["train_ber_model_orders"])
+	ber_model_num = len(my_train_config["train_ber_model_orders"])
 	my_train_config["wireless_loss_ratio"] = 0.05 / ber_model_num
 	my_train_config["hyper_param_schedule"]["wireless_loss_ratio"]["step_size"] = 0.05 / ber_model_num
 	my_train_config["wireless_p_scale"] = my_train_config["wireless_p_scale"] / ber_model_num
 	a_train_task(train_config=my_train_config)
 
-
-	flat_aug, selective_aug = True, True
 	for flat_mode in [True, False]:
 		snr_list = list(range(-10, 31, 1))
 		for snr in snr_list:
 			each_config = {
-				"dataset": "ImageNet",
-				"checkpoints_directory": f"./checkpoints/imagenet",
-				"dataset_directory": f"/root/autodl-tmp/imagenet",
-				"ber_model_path": r"./checkpoints/clarke_channel_models/clarke_model",
-				# Multi-channel training; it specifies the used ber models and the checkpoints
-				"train_ber_model_orders": [1, 2, 3],
-
-				"noisy_training": True,
-				"noisy_evaluation": True,
-				"tracking_trained_wireless_param": False,
-				"seed": 1999,
-				"Manual_flip_pattern_mode": False,
-				"use_channel_model_for_eval": True,
 				"flat_mode": flat_mode,
-				"multi_path_num": 2,
-				"min_path_delay": 9,
-				"max_path_delay": 40,
 				"eval_wireless_param": snr, # It specifies the channel model settings during evaluation
-				"eval_multi_channel_configs": {"aimc_bit": [2, 3, 4], "order": [1, 2, 3]},
-
-				"flat_channel_aug_mode": flat_aug,
-				"freq_selective_aug_mode": selective_aug,
 			}
 			my_train_config.update(each_config)
 			a_evaluate_task(eval_config=my_train_config)
-
 
 
 if __name__ == "__main__":

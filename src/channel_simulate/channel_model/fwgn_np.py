@@ -184,6 +184,7 @@ def prepare_fadings(
 	fading_num: int,
 	overwrite: bool = False
 ):
+	print("=========================================== Generating Random fading factor traces ===========================================")
 	fading_data_dir = root / r"data/channel"
 	if not os.path.exists(fading_data_dir):
 		os.makedirs(fading_data_dir)
@@ -210,6 +211,8 @@ def prepare_fadings(
 		fading_factors, _, _, _ = fwgn_model(fd_m=f_doppler, fs=fs, samp_num=padded_symbols_num + symbol_group_num)
 		fading_i_buffer.append(fading_factors.real)
 		fading_q_buffer.append(fading_factors.imag)
+		if (idx + 1) % 1000 == 0:
+			print(f"\t>>> {idx + 1} finished.")
 
 	fading_i_buffer = np.stack(fading_i_buffer, axis=0)
 	fading_q_buffer = np.stack(fading_q_buffer, axis=0)

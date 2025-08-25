@@ -15,9 +15,9 @@ for i in range(3):
 	root = root.parent
 
 
-def load_channel_snr_data(ofdm_order: int):
-	snr_path = root / f"data/channel/snr_list_order{ofdm_order}.npy"
-	ber_path = root / f"data/channel/symbol_wise_ber_order{ofdm_order}.npy"
+def load_channel_snr_data(qam_order: int, **kwargs):
+	snr_path = root / f"data/channel/snr_list_order{qam_order}.npy"
+	ber_path = root / f"data/channel/symbol_wise_ber_order{qam_order}.npy"
 	snr_list = np.load(str(snr_path))
 	snr_list = snr_list[..., np.newaxis]
 	symbol_bers = np.load(str(ber_path))

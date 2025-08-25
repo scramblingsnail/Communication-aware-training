@@ -1,14 +1,30 @@
 # Communication-aware training
 
 ## Training cost
-### Source file is [Here](train_logs)
+### Training Trace Source File is [Here](train_logs)
 
-### training cost visualization:
+### Training cost visualization:
 
 ![Training cost](asset/train_cost.jpg)
 
 ## Environment
 Windows/Linux + CPU/GPU + python3.8
+
+## QUICK START
+Rewrite the `train_config.yaml` configuration file. Specifically, change the `dataset_directory` to your own directory that 
+stores the ImageNet dataset. Be sure all the images in your directory have been categorized.
+For example:
+
+![dir_example_1](asset/dataset_dir_example.png)
+![dir_example_2](asset/dataset_dir_val.png)
+
+Run `main.py`, it will:
+1. Generate random channel fading factor trajectories. >> `This step consumes several hours.`
+2. Generate the BER models.
+3. Communication-aware training and evaluation. >> `This step consumes about 30 hours (when using six RTX4090D for DDP training)`
+
+## Advantages
+![advantages](asset/results_advantages.jpg)
 
 ## Code Structure
 >``` 

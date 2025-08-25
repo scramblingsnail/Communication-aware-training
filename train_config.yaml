@@ -1,13 +1,13 @@
 dataset: "ImageNet"
 checkpoints_directory: "./checkpoints/imagenet"
-dataset_directory: "Your dataset directory"
+dataset_directory: "/root/autodl-tmp/imagenet" # "Your dataset directory"
 noisy_training: True
 ber_model_path: "./checkpoints/clarke_channel_models/clarke_model"
 train_ber_model_orders: [1, 2, 3]
 
 noisy_evaluation: True
 use_channel_model_for_eval: True
-tracking_trained_wireless_param: True
+tracking_trained_wireless_param: False
 
 eval_wireless_param: 0
 Manual_flip_pattern_mode: False
@@ -48,7 +48,7 @@ eval_multi_channel_configs: {
 
 lr: 0.1
 momentum: 0.9
-weight_decay: 1e-4
+weight_decay: 0.0001 # 1e-4
 batch_size: 256
 epochs: 90
 num_workers: 60

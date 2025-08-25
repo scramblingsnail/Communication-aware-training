@@ -211,28 +211,28 @@ if __name__ == "__main__":
     num_to_word, _ = read_image_net_word_idx("/root/autodl-tmp/imagenet/devkit/ILSVRC2012_devkit_t12/data/meta.mat")
 
     # Extract val data
-    # construct_image_net_val_dir(
-    #     val_labels_path=val_ground_truth_path,
-    #     val_images_dir=val_img_dir,
-    #     target_val_dir=target_img_dir,
-    #     label_to_word=num_to_word,
-    # )
+    construct_image_net_val_dir(
+        val_labels_path=val_ground_truth_path,
+        val_images_dir=val_img_dir,
+        target_val_dir=target_img_dir,
+        label_to_word=num_to_word,
+    )
 
 
     # Randomly extract ImageNet-100
-    used_classes = []
-    for v_idx in range(5, 6):
-        name_list = load_class_names(version_idx=v_idx)
-        each_used_classes = image_net_sub_set(
-            subset_dir=f"/root/autodl-tmp/imagenet-100-v{v_idx}",
-            idx_to_word=num_to_word,
-            src_train_data_dir="/root/autodl-tmp/imagenet/train",
-            src_val_data_dir="/root/autodl-tmp/imagenet/val",
-            categories_num=100,
-            exclude_classes=used_classes,
-            specified_classes=name_list,
-        )
-        used_classes.extend(each_used_classes)
+    # used_classes = []
+    # for v_idx in range(5, 6):
+    #     name_list = load_class_names(version_idx=v_idx)
+    #     each_used_classes = image_net_sub_set(
+    #         subset_dir=f"/root/autodl-tmp/imagenet-100-v{v_idx}",
+    #         idx_to_word=num_to_word,
+    #         src_train_data_dir="/root/autodl-tmp/imagenet/train",
+    #         src_val_data_dir="/root/autodl-tmp/imagenet/val",
+    #         categories_num=100,
+    #         exclude_classes=used_classes,
+    #         specified_classes=name_list,
+    #     )
+    #     used_classes.extend(each_used_classes)
 
 
     # Randomly extract train dataset with different size 100 200 400 800

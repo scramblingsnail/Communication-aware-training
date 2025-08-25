@@ -2,7 +2,7 @@
 device: 'GPU' # 'CPU', 'GPU'
 # dataset
 data_directory: './data'
-dataset: ImageNet # ImageNet-100
+dataset: 'ImageNet' # 'ImageNet-100'
 dataset_directory: "/root/autodl-tmp/imagenet-100-v1"
 # save
 checkpoints_directory: './checkpoints'
